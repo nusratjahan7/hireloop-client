@@ -120,7 +120,7 @@ const HeroSection = () => {
 
                 {/* "Assisting over" text — sits above the bottom of the globe */}
                 <div className="absolute bottom-[58%] left-1/2 -translate-x-1/2 z-20 text-center w-full px-4 pointer-events-none">
-                    <p className="text-white text-lg sm:text-2xl font-light leading-snug drop-shadow-lg">
+                    <p className="text-white text-lg sm:text-2xl md:text-3xl font-light leading-snug drop-shadow-lg">
                         Assisting over{" "}
                         <span className="font-semibold">15,000 job seekers</span>
                         <br />
