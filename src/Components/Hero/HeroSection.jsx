@@ -46,7 +46,15 @@ const stats = [
 const HeroSection = () => {
     return (
         <section className="relative bg-black overflow-hidden mt-20">
-
+            {/* ── Starfield dots ── */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    backgroundImage:
+                        "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)",
+                    backgroundSize: "40px 40px",
+                }}
+            />
             {/* ── Top hero content ── */}
             <div className="relative z-10 flex flex-col items-center pt-14 pb-0 px-4 text-center">
 
@@ -136,15 +144,14 @@ const HeroSection = () => {
             </div>
 
             {/* ── Stats bar ── */}
-            <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-1.5 border-t border-white/10 -mt-50 lg:-mt-90">
-                {stats.map((stat, i) => (
+            <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 px-4 pb-8 -mt-50 lg:-mt-90 bg-black">
+                {stats.map((stat) => (
                     <div
                         key={stat.label}
-                        className={`flex flex-col gap-2 px-6 py-6 bg-[#0f1117] ${i < stats.length - 1 ? "border-r border-white/10" : ""
-                            }`}
+                        className="flex flex-col gap-3 px-5 py-5 rounded-2xl backdrop-blur-sm bg-gradient-to-t from-[#2a2a2aa1] via-[#111111] to-[#0a0a0a]"
                     >
                         {stat.icon}
-                        <span className="text-white text-2xl sm:text-3xl font-bold mt-1">
+                        <span className="text-white text-3xl font-bold tracking-tight">
                             {stat.value}
                         </span>
                         <span className="text-gray-500 text-xs">{stat.label}</span>
