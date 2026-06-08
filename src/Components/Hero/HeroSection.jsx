@@ -45,7 +45,7 @@ const stats = [
 
 const HeroSection = () => {
     return (
-        <section className="relative bg-black overflow-hidden mt-20">
+        <section className="relative bg-black overflow-hidden pt-20">
             {/* ── Starfield dots ── */}
             <div
                 className="absolute inset-0 pointer-events-none"

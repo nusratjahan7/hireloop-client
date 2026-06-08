@@ -53,7 +53,7 @@ const Navbar = () => {
                                 Sign In
                             </Link>
                             <Link
-                                href="/get-started"
+                                href="/auth/signup"
                                 className="text-sm font-medium bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
                             >
                                 Get Started
@@ -108,7 +108,7 @@ const Navbar = () => {
                         Sign In
                     </Link>
                     <Link
-                        href="/get-started"
+                        href="/auth/signup"
                         className="text-sm font-medium text-center bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
                         onClick={() => setMenuOpen(false)}
                     >
