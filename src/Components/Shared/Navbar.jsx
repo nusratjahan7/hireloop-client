@@ -18,7 +18,8 @@ const Navbar = () => {
         "text-sm text-[#7c5cf5] hover:text-[#6d4fe8] transition-colors duration-200";
 
     return (
-        <nav className="bg-[#222222] mx-4 mt-4 rounded-2xl">
+        <nav className="bg-[#222222] mx-4 mt-4 fixed top-0 left-0 right-0 z-50  rounded-2xl">
+
             <div className=" px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
 

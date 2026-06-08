@@ -129,7 +129,7 @@ const Footer = () => {
 
                     {/* Copyright + legal */}
                     <div className="flex flex-wrap items-center gap-4 text-gray-500 text-xs">
-                        <span>Copyright 2024 — Programming menu</span>
+                        <span>Copyright 2024 — Hireloop</span>
                         <Link href="/terms" className="hover:text-white transition-colors duration-200">
                             Terms & Policy
                         </Link>
