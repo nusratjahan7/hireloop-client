@@ -49,7 +49,7 @@ const Navbar = () => {
                         {/* Desktop CTA */}
                         <div className="hidden md:flex items-center gap-4">
                             <div className="w-px h-5 bg-white/20" />
-                            <Link href="/sign-in" className={SignInClass}>
+                            <Link href="/auth/signin" className={SignInClass}>
                                 Sign In
                             </Link>
                             <Link
@@ -101,7 +101,7 @@ const Navbar = () => {
                     ))}
                     <div className="w-full h-px bg-white/10" />
                     <Link
-                        href="/sign-in"
+                        href="/auth/signin"
                         className={SignInClass}
                         onClick={() => setMenuOpen(false)}
                     >

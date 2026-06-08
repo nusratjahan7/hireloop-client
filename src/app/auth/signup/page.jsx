@@ -58,7 +58,7 @@ export default function SignUpPage() {
         return (
             <main className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4">
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full"
                         style={{ background: "radial-gradient(circle, rgba(124,92,245,0.12) 0%, transparent 70%)" }} />
                 </div>
                 <div className="relative z-10 flex flex-col items-center text-center max-w-sm mx-auto">
@@ -86,9 +86,9 @@ export default function SignUpPage() {
 
             {/* Background glows */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px]"
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-175 h-100"
                     style={{ background: "radial-gradient(ellipse at top, rgba(124,92,245,0.15) 0%, transparent 60%)" }} />
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px]"
+                <div className="absolute bottom-0 right-0 w-100 h-100"
                     style={{ background: "radial-gradient(circle, rgba(124,92,245,0.06) 0%, transparent 70%)" }} />
                 <div className="absolute inset-0 opacity-20"
                     style={{
@@ -197,7 +197,7 @@ export default function SignUpPage() {
                                         <div className={`h-full rounded-full transition-all duration-300 ${strength.color} ${strength.width}`} />
                                     </div>
                                     <span className={`text-[11px] font-medium ${strength.label === "Weak" ? "text-red-400" :
-                                            strength.label === "Fair" ? "text-yellow-400" : "text-emerald-400"
+                                        strength.label === "Fair" ? "text-yellow-400" : "text-emerald-400"
                                         }`}>
                                         {strength.label}
                                     </span>
