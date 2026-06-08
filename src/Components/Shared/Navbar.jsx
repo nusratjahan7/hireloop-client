@@ -1,6 +1,8 @@
 "use client";
+import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const navLinks = [
@@ -11,6 +13,30 @@ const navLinks = [
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const router = useRouter();
+
+    const { data: session, isPending } = authClient.useSession();
+    const user = session?.user;
+
+    const handleSignOutDes = async () => {
+        try {
+            await authClient.signOut();
+            router.refresh();
+            router.push("/");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleSignOut = async () => {
+        try {
+            await authClient.signOut();
+            setMenuOpen(false);
+            router.refresh();
+            router.push("/");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const linkClass =
         "text-sm text-gray-300 hover:text-white transition-colors duration-200";
@@ -47,18 +73,32 @@ const Navbar = () => {
                         </div>
 
                         {/* Desktop CTA */}
-                        <div className="hidden md:flex items-center gap-4">
-                            <div className="w-px h-5 bg-white/20" />
-                            <Link href="/auth/signin" className={SignInClass}>
-                                Sign In
-                            </Link>
-                            <Link
-                                href="/auth/signup"
-                                className="text-sm font-medium bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                            >
-                                Get Started
-                            </Link>
-                        </div>
+                        {
+                            user ? <div className="hidden md:flex items-center gap-4">
+                                <div className="w-px h-5 bg-white/20" />
+                                <Link href="/profile" className={SignInClass}>
+                                    {user.name}
+                                </Link>
+                                <button
+                                    onClick={handleSignOutDes}
+                                    className="text-sm font-medium bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                                >
+                                    SignOut
+                                </button>
+                            </div> : <div className="hidden md:flex items-center gap-4">
+                                <div className="w-px h-5 bg-white/20" />
+                                <Link href="/auth/signin" className={SignInClass}>
+                                    Sign In
+                                </Link>
+                                <Link
+                                    href="/auth/signup"
+                                    className="text-sm font-medium bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                                >
+                                    Get Started
+                                </Link>
+                            </div>
+                        }
+
                     </div>
 
                     {/* Mobile Hamburger */}
@@ -100,23 +140,41 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <div className="w-full h-px bg-white/10" />
-                    <Link
-                        href="/auth/signin"
-                        className={SignInClass}
-                        onClick={() => setMenuOpen(false)}
-                    >
-                        Sign In
-                    </Link>
-                    <Link
-                        href="/auth/signup"
-                        className="text-sm font-medium text-center bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                        onClick={() => setMenuOpen(false)}
-                    >
-                        Get Started
-                    </Link>
+                    {
+                        user ? <div className="flex flex-col gap-4">
+                            <Link
+                                href="/profile"
+                                className={SignInClass}
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                {user.name}
+                            </Link>
+                            <button
+                                onClick={handleSignOut}
+                                className="text-sm font-medium text-center bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                            >
+                                SignOut
+                            </button>
+                        </div> : <div className="flex flex-col gap-4">
+                            <Link
+                                href="/auth/signin"
+                                className={SignInClass}
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Sign In
+                            </Link>
+                            <Link
+                                href="/auth/signup"
+                                className="text-sm font-medium text-center bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                Get Started
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
-        </nav>
+        </nav >
     );
 };
 

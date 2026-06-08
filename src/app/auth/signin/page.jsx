@@ -34,6 +34,7 @@ export default function SignInPage() {
                 toast.error(authError.message || "Invalid email or password.");
             } else {
                 toast.success("Welcome back!");
+                router.refresh();
                 router.push("/");
             }
         } catch (err) {
