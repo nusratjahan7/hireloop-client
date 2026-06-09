@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Search, MapPin } from "lucide-react";
+import { motion } from "motion/react"
 
 const trendingTags = ["Product Designer", "AI Engineering", "Dev-ops Engineer"];
 
@@ -43,6 +44,8 @@ const stats = [
     },
 ];
 
+const headline = "Find Your Dream Job Today";
+
 const HeroSection = () => {
     return (
         <section className="relative bg-black overflow-hidden pt-20">
@@ -70,9 +73,22 @@ const HeroSection = () => {
                 </div>
 
                 {/* Headline */}
-                <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold text-white leading-tight tracking-tight max-w-2xl">
-                    Find Your Dream Job Today
-                </h1>
+                <motion.h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold text-white leading-tight tracking-tight max-w-2xl">
+                    {headline.split("").map((char, i) => (
+                        <motion.span
+                            key={i}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{
+                                duration: 0.08,
+                                delay: i * 0.04,
+                            }}
+                        >
+                            {char}
+                        </motion.span>
+                    ))}
+
+                </motion.h1>
 
                 {/* Subtext */}
                 <p className="mt-4 text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
@@ -145,8 +161,16 @@ const HeroSection = () => {
 
             {/* ── Stats bar ── */}
             <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 px-4 pb-8 -mt-50 lg:-mt-90 bg-black">
-                {stats.map((stat) => (
-                    <div
+                {stats.map((stat, index) => (
+                    <motion.div
+                        initial={{ opacity: 0, y: 32 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{
+                            duration: 0.5,
+                            delay: index * 0.1,
+                            ease: [0.21, 0.47, 0.32, 0.98],
+                        }}
                         key={stat.label}
                         className="flex flex-col gap-3 px-5 py-5 rounded-2xl backdrop-blur-sm bg-gradient-to-t from-[#2a2a2aa1] via-[#111111] to-[#0a0a0a]"
                     >
@@ -155,7 +179,7 @@ const HeroSection = () => {
                             {stat.value}
                         </span>
                         <span className="text-gray-500 text-xs">{stat.label}</span>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </section>
