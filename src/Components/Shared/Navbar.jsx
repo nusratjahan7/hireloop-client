@@ -1,5 +1,6 @@
 "use client";
 import { authClient } from "@/lib/auth-client";
+import { Spinner } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,11 @@ const Navbar = () => {
 
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user;
+
+    if (isPending) {
+        return <div className="inline-flex items-center justify-center p-4"><Spinner size="lg" /></div>
+    }
+
 
     const handleSignOutDes = async () => {
         try {
