@@ -3,17 +3,21 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import { Label, Radio, RadioGroup } from "@heroui/react";
 import { toast } from "sonner";
 import { Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 
 export default function SignUpPage() {
     const [form, setForm] = useState({ name: "", email: "", password: "" });
+    const [role, setRole] = useState("seeker");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
+
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -29,6 +33,7 @@ export default function SignUpPage() {
                 name: form.name,
                 email: form.email,
                 password: form.password,
+                role: role,
             });
 
             if (authError) {
@@ -161,6 +166,36 @@ export default function SignUpPage() {
                                 autoComplete="email"
                                 className="w-full bg-white/4 border border-white/8 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none focus:border-[#7c5cf5]/60 focus:bg-white/6 transition-all duration-200"
                             />
+                        </div>
+
+                        {/* Role  */}
+                        <div className="flex flex-col gap-1.5">
+                            <label className="text-xs font-medium text-gray-400 tracking-wide">
+                                Role
+                            </label>
+                            <RadioGroup
+                                defaultValue="seeker"
+                                name="role"
+                                orientation="horizontal"
+                                onChange={value => setRole(value)}
+                            >
+                                <Radio value="seeker">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Job Seeker</Label>
+                                    </Radio.Content>
+                                </Radio>
+                                <Radio value="recruiter">
+                                    <Radio.Control>
+                                        <Radio.Indicator />
+                                    </Radio.Control>
+                                    <Radio.Content>
+                                        <Label>Recruiter</Label>
+                                    </Radio.Content>
+                                </Radio>
+                            </RadioGroup>
                         </div>
 
                         {/* Password */}
