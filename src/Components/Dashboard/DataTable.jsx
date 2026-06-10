@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const statusStyles = {
     Interviewing: "bg-green-500/20 text-green-400",
     Reviewing: "bg-yellow-500/20 text-yellow-400",
@@ -19,9 +21,9 @@ export default function DataTable({
                     {title}
                 </h2>
 
-                <button className="text-sm text-gray-400 hover:text-white transition-colors">
+                <Link href="/dashboard/recruiter/jobs" className="text-sm text-gray-400 hover:text-white transition-colors">
                     {actionText}
-                </button>
+                </Link >
             </div>
 
             {/* Table Wrapper */}
