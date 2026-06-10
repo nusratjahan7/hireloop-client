@@ -1,29 +1,21 @@
+"use client"
+import { useState } from "react";
 import {
     Form,
-    Input,
     Select,
     Button,
     Switch,
     Label,
     ListBox,
-    TextArea,
 } from "@heroui/react";
+import { toast } from "sonner";
 
-
-const readonlyInputStyles = {
-    label: "text-zinc-500 text-xs font-medium pb-1",
-    inputWrapper: [
-        "bg-zinc-800/40",
-        "border border-zinc-800",
-        "rounded-lg",
-        "h-10",
-        "shadow-none",
-        "cursor-not-allowed",
-        "opacity-60",
-    ].join(" "),
-    input: "text-zinc-400 text-sm cursor-not-allowed",
+// TODO: replace with your real server action
+const createJob = async (payload) => {
+    console.log("createJob payload:", payload);
+    // Simulate async call — swap this out for your actual API/action
+    return { insertedId: "mock_id_123" };
 };
-
 
 const selectButtonClass = [
     "w-full justify-between",
@@ -39,12 +31,88 @@ const selectButtonClass = [
 
 const labelClass = "block text-xs font-medium text-zinc-400 mb-1.5";
 
+const errorClass = "text-xs text-red-400 mt-1";
+
+const inputClass = (hasError) =>
+    [
+        "w-full border shadow-none rounded-lg h-10 px-3 bg-zinc-800 text-white text-sm placeholder:text-zinc-500",
+        "focus:outline-none",
+        hasError
+            ? "border-red-500 focus:border-red-400"
+            : "border-zinc-700 hover:border-zinc-500 focus:border-zinc-400",
+    ].join(" ");
+
+const textareaClass = (hasError) =>
+    [
+        "w-full border shadow-none rounded-lg px-3 py-2 bg-zinc-800 text-white text-sm placeholder:text-zinc-500 resize-none",
+        "focus:outline-none",
+        hasError
+            ? "border-red-500 focus:border-red-400"
+            : "border-zinc-700 hover:border-zinc-500 focus:border-zinc-400",
+    ].join(" ");
+
 export default function NewJobPage() {
+    const [mockCompany] = useState({
+        name: "Acme Corp (Auto-filled)",
+        id: "company_123",
+        isApproved: true,
+    });
+
+    const [isRemote, setIsRemote] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!mockCompany.isApproved) {
+            toast.error("Your company profile must be approved before you can post jobs.");
+            return;
+        }
+
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData.entries());
+
+        const newErrors = {};
+        if (!data.jobTitle) newErrors.jobTitle = "Job title is required";
+        if (!data.jobCategory) newErrors.jobCategory = "Job category is required";
+        if (!data.jobType) newErrors.jobType = "Job type is required";
+        if (!data.minSalary) newErrors.minSalary = "Minimum salary is required";
+        if (!data.maxSalary) newErrors.maxSalary = "Maximum salary is required";
+        if (!data.currency) newErrors.currency = "Currency is required";
+        if (!isRemote && !data.location) newErrors.location = "Location is required for non-remote roles";
+        if (!data.deadline) newErrors.deadline = "Application deadline is required";
+        if (!data.responsibilities) newErrors.responsibilities = "Responsibilities are required";
+        if (!data.requirements) newErrors.requirements = "Requirements are required";
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+
+        const payload = {
+            ...data,
+            isRemote,
+            companyId: mockCompany.id,
+            status: "active",
+            isPubliclyVisible: true,
+        };
+
+        const res = await createJob(payload);
+
+        if (res.insertedId) {
+            toast.success("Job posted successfully!");
+            e.target.reset();
+            setIsRemote(false);
+            window.location.href = "/dashboard/recruiter/jobs";
+        }
+    };
+
     return (
-        <div className="min-h-screen  px-4 py-8 sm:px-6 lg:px-8">
+        <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
 
-                {/* Page heading */}
                 <div className="mb-6">
                     <h1 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
                         Post a new job
@@ -54,7 +122,7 @@ export default function NewJobPage() {
                     </p>
                 </div>
 
-                <Form className="space-y-5">
+                <Form onSubmit={handleSubmit} className="space-y-5">
 
                     {/* ── Job Information ── */}
                     <section className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
@@ -66,21 +134,28 @@ export default function NewJobPage() {
 
                         <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                            {/* Job Title — full width */}
+                            {/* Job Title */}
                             <div className="sm:col-span-2">
                                 <Label className={labelClass}>Job Title</Label>
-                                <Input
-                                    label="Job title"
+                                <input
+                                    name="jobTitle"
                                     placeholder="e.g. Senior Frontend Developer"
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg h-10 px-3"
+                                    className={inputClass(errors.jobTitle)}
                                 />
+                                {errors.jobTitle && <p className={errorClass}>{errors.jobTitle}</p>}
                             </div>
 
                             {/* Category */}
                             <div className="flex flex-col">
                                 <Label className={labelClass}>Category</Label>
-                                <Select>
-                                    <Button variant="bordered" className={selectButtonClass}>
+                                <Select name="jobCategory">
+                                    <Button
+                                        variant="bordered"
+                                        className={
+                                            selectButtonClass +
+                                            (errors.jobCategory ? " !border-red-500" : "")
+                                        }
+                                    >
                                         <Select.Value placeholder="Select category" />
                                         <Select.Indicator />
                                     </Button>
@@ -94,13 +169,20 @@ export default function NewJobPage() {
                                         </ListBox>
                                     </Select.Popover>
                                 </Select>
+                                {errors.jobCategory && <p className={errorClass}>{errors.jobCategory}</p>}
                             </div>
 
                             {/* Job Type */}
                             <div className="flex flex-col">
                                 <Label className={labelClass}>Job type</Label>
-                                <Select>
-                                    <Button variant="bordered" className={selectButtonClass}>
+                                <Select name="jobType">
+                                    <Button
+                                        variant="bordered"
+                                        className={
+                                            selectButtonClass +
+                                            (errors.jobType ? " !border-red-500" : "")
+                                        }
+                                    >
                                         <Select.Value placeholder="Select type" />
                                         <Select.Indicator />
                                     </Button>
@@ -114,54 +196,74 @@ export default function NewJobPage() {
                                         </ListBox>
                                     </Select.Popover>
                                 </Select>
+                                {errors.jobType && <p className={errorClass}>{errors.jobType}</p>}
                             </div>
 
                             {/* Location */}
                             <div>
-                                <Label className={labelClass}>Location</Label>
-                                <Input
-                                    label="Location"
+                                <Label className={labelClass}>
+                                    Location
+                                    {isRemote && (
+                                        <span className="ml-2 text-zinc-500 font-normal">(not required for remote)</span>
+                                    )}
+                                </Label>
+                                <input
+                                    name="location"
                                     placeholder="e.g. Dhaka, Bangladesh"
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg h-10 px-3"
+                                    disabled={isRemote}
+                                    className={
+                                        inputClass(errors.location) +
+                                        (isRemote ? " opacity-40 cursor-not-allowed" : "")
+                                    }
                                 />
+                                {errors.location && <p className={errorClass}>{errors.location}</p>}
                             </div>
 
                             {/* Deadline */}
                             <div>
-                                <Label className={labelClass}>Deadline</Label>
-                                <Input
+                                <Label className={labelClass}>Application Deadline</Label>
+                                <input
                                     type="date"
-                                    label="Application deadline"
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg h-10 px-3"
+                                    name="deadline"
+                                    className={inputClass(errors.deadline) + " [color-scheme:dark]"}
                                 />
+                                {errors.deadline && <p className={errorClass}>{errors.deadline}</p>}
                             </div>
 
-                            {/* Salary: min / max / currency */}
+                            {/* Salary */}
                             <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
-
                                 <div>
                                     <Label className={labelClass}>Min Salary</Label>
-                                    <Input
+                                    <input
                                         type="number"
-                                        label="Min salary"
+                                        name="minSalary"
                                         placeholder="500"
-                                        className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg h-10 px-3"
+                                        className={inputClass(errors.minSalary)}
                                     />
+                                    {errors.minSalary && <p className={errorClass}>{errors.minSalary}</p>}
                                 </div>
 
                                 <div>
                                     <Label className={labelClass}>Max Salary</Label>
-                                    <Input
+                                    <input
                                         type="number"
-                                        label="Max salary"
+                                        name="maxSalary"
                                         placeholder="1500"
-                                        className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg h-10 px-3"
+                                        className={inputClass(errors.maxSalary)}
                                     />
+                                    {errors.maxSalary && <p className={errorClass}>{errors.maxSalary}</p>}
                                 </div>
+
                                 <div className="col-span-2 sm:col-span-1 flex flex-col">
                                     <Label className={labelClass}>Currency</Label>
-                                    <Select>
-                                        <Button variant="bordered" className={selectButtonClass}>
+                                    <Select name="currency">
+                                        <Button
+                                            variant="bordered"
+                                            className={
+                                                selectButtonClass +
+                                                (errors.currency ? " !border-red-500" : "")
+                                            }
+                                        >
                                             <Select.Value placeholder="Currency" />
                                             <Select.Indicator />
                                         </Button>
@@ -173,12 +275,17 @@ export default function NewJobPage() {
                                             </ListBox>
                                         </Select.Popover>
                                     </Select>
+                                    {errors.currency && <p className={errorClass}>{errors.currency}</p>}
                                 </div>
                             </div>
 
                             {/* Remote toggle */}
                             <div className="sm:col-span-2 flex items-center gap-3 pt-1">
-                                <Switch classNames={{ label: "text-sm text-zinc-300" }}>
+                                <Switch
+                                    isSelected={isRemote}
+                                    onValueChange={setIsRemote}
+                                    classNames={{ label: "text-sm text-zinc-300" }}
+                                >
                                     Remote position
                                 </Switch>
                                 <span className="text-xs text-zinc-500">
@@ -198,30 +305,41 @@ export default function NewJobPage() {
 
                         <div className="p-5 flex flex-col gap-5">
                             <div>
-                                <Label className="block text-sm font-medium text-zinc-400 mb-2">Responsibilities</Label>
-                                <TextArea
-                                    label="Responsibilities"
+                                <Label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                                    Responsibilities
+                                </Label>
+                                <textarea
+                                    name="responsibilities"
                                     rows={5}
                                     placeholder="List what the person in this role will do day-to-day..."
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg  px-3"
+                                    className={textareaClass(errors.responsibilities)}
                                 />
+                                {errors.responsibilities && <p className={errorClass}>{errors.responsibilities}</p>}
                             </div>
+
                             <div>
-                                <Label className="block text-sm font-medium text-zinc-400 mb-2">Requirements</Label>
-                                <TextArea
-                                    label="Requirements"
+                                <Label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                                    Requirements
+                                </Label>
+                                <textarea
+                                    name="requirements"
                                     rows={5}
                                     placeholder="Skills, experience, and qualifications needed..."
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg  px-3"
+                                    className={textareaClass(errors.requirements)}
                                 />
+                                {errors.requirements && <p className={errorClass}>{errors.requirements}</p>}
                             </div>
+
                             <div>
-                                <Label className="block text-sm font-medium text-zinc-400 mb-2 ">Benefits</Label>
-                                <TextArea
-                                    label="Benefits"
+                                <Label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                                    Benefits
+                                    <span className="ml-1.5 text-zinc-500 font-normal">(optional)</span>
+                                </Label>
+                                <textarea
+                                    name="benefits"
                                     rows={4}
-                                    placeholder="Health cover, equity, flexible hours… (optional)"
-                                    className="w-full border border-zinc-700 bg-zinc-800 shadow-none rounded-lg  px-3"
+                                    placeholder="Health cover, equity, flexible hours…"
+                                    className={textareaClass(false)}
                                 />
                             </div>
                         </div>
@@ -236,39 +354,46 @@ export default function NewJobPage() {
                         </div>
 
                         <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <Input
-                                label="Company"
-                                value="Acme Inc."
-                                readOnly
-                                classNames={readonlyInputStyles}
-                            />
-                            <Input
-                                label="Status"
-                                value="Approved"
-                                readOnly
-                                classNames={{
-                                    ...readonlyInputStyles,
-                                    input: "text-emerald-400 text-sm cursor-not-allowed",
-                                }}
-                            />
-                            <Input
-                                label="Plan usage"
-                                value="2 / 10 active jobs"
-                                readOnly
-                                classNames={readonlyInputStyles}
-                            />
+                            <div>
+                                <label className="block text-xs font-medium text-zinc-500 mb-1.5">Company</label>
+                                <input
+                                    value={mockCompany.name}
+                                    readOnly
+                                    className="w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm text-zinc-400 cursor-not-allowed opacity-60 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-zinc-500 mb-1.5">Status</label>
+                                <input
+                                    value={mockCompany.isApproved ? "Approved" : "Pending"}
+                                    readOnly
+                                    className={`w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm cursor-not-allowed opacity-60 focus:outline-none ${mockCompany.isApproved ? "text-emerald-400" : "text-amber-400"
+                                        }`}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-zinc-500 mb-1.5">Plan usage</label>
+                                <input
+                                    value="2 / 10 active jobs"
+                                    readOnly
+                                    className="w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm text-zinc-400 cursor-not-allowed opacity-60 focus:outline-none"
+                                />
+                            </div>
                         </div>
                     </section>
 
                     {/* ── Footer ── */}
                     <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pb-8">
                         <Button
+                            type="button"
                             variant="bordered"
                             className="w-full sm:w-auto border-zinc-700 text-zinc-300 hover:bg-zinc-800 rounded-xl px-6 h-11"
+                            onPress={() => window.history.back()}
                         >
                             Cancel
                         </Button>
                         <Button
+                            type="submit"
                             color="primary"
                             className="w-full sm:w-auto rounded-xl px-6 h-11 font-medium"
                         >
