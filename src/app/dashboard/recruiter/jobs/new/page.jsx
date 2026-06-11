@@ -9,13 +9,7 @@ import {
     ListBox,
 } from "@heroui/react";
 import { toast } from "sonner";
-
-// TODO: replace with your real server action
-const createJob = async (payload) => {
-    console.log("createJob payload:", payload);
-    // Simulate async call — swap this out for your actual API/action
-    return { insertedId: "mock_id_123" };
-};
+import { createJob } from "@/lib/actions/jobs";
 
 const selectButtonClass = [
     "w-full justify-between",
