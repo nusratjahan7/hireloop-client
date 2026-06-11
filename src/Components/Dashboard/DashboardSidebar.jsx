@@ -1,27 +1,29 @@
 
-import { LayoutSideContentLeft, Bell, Envelope, Gear, House, Magnifier, Person } from "@gravity-ui/icons";
+import { LayoutSideContentLeft, Envelope, Gear, House, Magnifier, Person, Plus, Factory } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
+import Link from "next/link";
 
 export function DashboardSidebar() {
     const navItems = [
-        { icon: House, label: "Home" },
-        { icon: Magnifier, label: "Search" },
-        { icon: Bell, label: "Notifications" },
-        { icon: Envelope, label: "Messages" },
-        { icon: Person, label: "Profile" },
-        { icon: Gear, label: "Settings" },
+        { icon: House, label: "Home", href: "/dashboard/recruiter" },
+        { icon: Magnifier, label: "Jobs", href: "/dashboard/recruiter/jobs" },
+        { icon: Plus, label: "Create A Job", href: "/dashboard/recruiter/jobs/new" },
+        { icon: Envelope, label: "Messages", href: "/dashboard/recruiter/messages" },
+        { icon: Person, label: "Profile", href: "/dashboard/recruiter/profile" },
+        { icon: Factory, label: "Company Profile", href: "/dashboard/recruiter/company" },
+        { icon: Gear, label: "Settings", href: "/dashboard/recruiter/settings" },
     ];
 
     const navContent = <nav className="flex flex-col gap-1">
         {navItems.map((item) => (
-            <button
+            <Link
                 key={item.label}
+                href={item.href}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
-                type="button"
             >
                 <item.icon className="size-5 text-muted" />
                 {item.label}
-            </button>
+            </Link>
         ))}
     </nav>
 
@@ -34,8 +36,8 @@ export function DashboardSidebar() {
 
 
             <Drawer>
-                <Button className="lg:hidden" variant="secondary">
-                    <LayoutSideContentLeft />
+                <Button className="lg:hidden mt-5 sticky top-24" variant="ghost">
+                    <LayoutSideContentLeft className="h-5 w-5" />
                 </Button>
                 <Drawer.Backdrop>
                     <Drawer.Content placement="left">
