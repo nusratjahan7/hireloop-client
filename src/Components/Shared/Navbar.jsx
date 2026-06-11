@@ -20,7 +20,31 @@ const Navbar = () => {
     const user = session?.user;
 
     if (isPending) {
-        return <div className="inline-flex items-center justify-center p-4"><Spinner size="lg" /></div>
+        return <nav className="bg-[#222222] mx-4 mt-4 fixed top-0 left-0 right-0 z-50 rounded-2xl">
+            <div className="px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16">
+                    {/* Logo skeleton */}
+                    <div className="h-6 w-28 rounded-md bg-white/10 animate-pulse" />
+
+                    {/* Desktop skeleton */}
+                    <div className="hidden md:flex items-center gap-8">
+                        <div className="h-3 w-20 rounded bg-white/10 animate-pulse" style={{ animationDelay: "0.1s" }} />
+                        <div className="h-3 w-16 rounded bg-white/10 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                        <div className="h-3 w-14 rounded bg-white/10 animate-pulse" style={{ animationDelay: "0.3s" }} />
+                        <div className="w-px h-5 bg-white/20" />
+                        <div className="h-3 w-12 rounded bg-white/10 animate-pulse" style={{ animationDelay: "0.4s" }} />
+                        <div className="h-9 w-24 rounded-lg bg-white/10 animate-pulse" style={{ animationDelay: "0.5s" }} />
+                    </div>
+
+                    {/* Mobile hamburger skeleton */}
+                    <div className="md:hidden flex flex-col gap-1.5">
+                        <div className="h-0.5 w-5 rounded bg-white/20 animate-pulse" />
+                        <div className="h-0.5 w-5 rounded bg-white/20 animate-pulse" style={{ animationDelay: "0.15s" }} />
+                        <div className="h-0.5 w-5 rounded bg-white/20 animate-pulse" style={{ animationDelay: "0.3s" }} />
+                    </div>
+                </div>
+            </div>
+        </nav>
     }
 
 
