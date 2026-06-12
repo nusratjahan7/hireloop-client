@@ -3,6 +3,8 @@ import { useState, useRef } from 'react';
 import { Button, Chip, Form, Select, ListBox } from "@heroui/react";
 import { OfficeBadge, Pencil, CloudArrowUpIn } from "@gravity-ui/icons";
 import Image from 'next/image';
+import { createCompany } from '@/lib/actions/companies';
+import { toast } from 'sonner';
 
 // ── Style constants (matching your job form style) ──────────────────────────
 const labelClass = "block text-xs font-medium text-zinc-400 mb-1.5";
@@ -121,16 +123,25 @@ function CompanyForm({ initial = {}, onCancel, onSave }) {
         return e;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const fd = new FormData(e.target);
         const fields = Object.fromEntries(fd.entries());
 
-        // console.log("Company form data:", { ...fields, logoUrl });
-
+        // validate first before hitting the API
         const errs = validate(fields);
         if (Object.keys(errs).length) { setErrors(errs); return; }
-        onSave({ ...fields, logoUrl });
+
+        const payload = { ...fields, logoUrl };
+        try {
+            const result = await createCompany(payload);
+            if (result) {
+                toast.success("Company registered successfully!");
+                onSave(payload);
+            }
+        } catch (err) {
+            toast.error("Something went wrong. Please try again.");
+        }
     };
 
     return (
