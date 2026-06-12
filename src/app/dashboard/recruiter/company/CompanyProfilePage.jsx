@@ -22,8 +22,7 @@ const statusConfig = {
     rejected: { label: "Rejected", color: "danger" },
 };
 
-// ── Mock data — replace with real fetch ─────────────────────────────────────
-const mockCompany = null;
+
 // const mockCompany = {
 //     name: "Acme Corp",
 //     websiteUrl: "https://acme.com",
@@ -108,7 +107,7 @@ function LogoUploader({ logoUrl, setLogoUrl, setLogoUploading, logoUploading }) 
 }
 
 // ── Company Form (Register + Edit) ──────────────────────────────────────────
-function CompanyForm({ initial = {}, onCancel, onSave }) {
+function CompanyForm({ initial = {}, onCancel, onSave, recruiterId }) {
     const [errors, setErrors] = useState({});
     const [logoUrl, setLogoUrl] = useState(initial.logoUrl || "");
     const [logoUploading, setLogoUploading] = useState(false);
@@ -132,7 +131,8 @@ function CompanyForm({ initial = {}, onCancel, onSave }) {
         const errs = validate(fields);
         if (Object.keys(errs).length) { setErrors(errs); return; }
 
-        const payload = { ...fields, logoUrl };
+        const payload = { ...fields, logoUrl, recruiterId };
+
         try {
             const result = await createCompany(payload);
             if (result) {
@@ -367,8 +367,8 @@ function CompanyDetails({ company, onEdit }) {
 }
 
 // ── Main Page ────────────────────────────────────────────────────────────────
-const CompanyProfilePage = () => {
-    const [company, setCompany] = useState(mockCompany);
+const CompanyProfilePage = ({ recruiter, recruiterCompany }) => {
+    const [company, setCompany] = useState(recruiterCompany ?? null);
     const [mode, setMode] = useState("view"); // "view" | "register" | "edit"
 
     const handleSave = (data) => {
@@ -402,6 +402,7 @@ const CompanyProfilePage = () => {
                     initial={mode === "edit" ? company : {}}
                     onCancel={() => setMode(company ? "view" : "view")}
                     onSave={handleSave}
+                    recruiterId={recruiter?.id}
                 />
             </div>
         );
