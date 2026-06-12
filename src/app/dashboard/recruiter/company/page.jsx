@@ -125,6 +125,9 @@ function CompanyForm({ initial = {}, onCancel, onSave }) {
         e.preventDefault();
         const fd = new FormData(e.target);
         const fields = Object.fromEntries(fd.entries());
+
+        // console.log("Company form data:", { ...fields, logoUrl });
+
         const errs = validate(fields);
         if (Object.keys(errs).length) { setErrors(errs); return; }
         onSave({ ...fields, logoUrl });
@@ -344,7 +347,7 @@ function CompanyDetails({ company, onEdit }) {
                 {company.description && (
                     <div>
                         <p className="text-xs text-zinc-600 mb-1.5">About</p>
-                        <p className="text-sm text-zinc-400 leading-relaxed">{company.description}</p>
+                        <p className="text-sm text-zinc-300 leading-relaxed">{company.description}</p>
                     </div>
                 )}
             </div>
