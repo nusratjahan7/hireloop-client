@@ -85,12 +85,6 @@ const TermsPage = () => {
                     ))}
                 </div>
 
-                {/* Footer note */}
-                <div className="mt-16 border-t border-zinc-800 pt-8 text-center">
-                    <p className="text-xs text-zinc-600">
-                        © {new Date().getFullYear()} Hireloop. All rights reserved.
-                    </p>
-                </div>
             </div>
         </div>
     );
