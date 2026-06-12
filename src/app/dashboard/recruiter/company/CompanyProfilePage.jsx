@@ -377,7 +377,7 @@ const CompanyProfilePage = ({ recruiter, recruiterCompany }) => {
         setMode("view");
     };
 
-    if (!company && mode !== "register") {
+    if (!company?._id && mode !== "register") {
         return (
             <div className="max-w-3xl mx-auto px-4 py-8">
                 <NoCompanyPrompt onRegister={() => setMode("register")} />

@@ -47,14 +47,6 @@ const textareaClass = (hasError) =>
 
 export default function NewJobForm({ company }) {
 
-    // console.log("company info", company);
-
-    // const [company] = useState({
-    //     name: "Acme Corp (Auto-filled)",
-    //     id: "company_123",
-    //     isApproved: true,
-    // });
-
     const [isRemote, setIsRemote] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -93,7 +85,7 @@ export default function NewJobForm({ company }) {
             isRemote,
             companyId: company._id,
             companyName: company.name,
-            companyLogo: company.logo,
+            companyLogo: company.logoUrl,
             status: "active",
             isPubliclyVisible: true,
         };
@@ -104,7 +96,7 @@ export default function NewJobForm({ company }) {
             toast.success("Job posted successfully!");
             e.target.reset();
             setIsRemote(false);
-            window.location.href = "/dashboard/recruiter/jobs";
+            // window.location.href = "/dashboard/recruiter/jobs";
         }
     };
 

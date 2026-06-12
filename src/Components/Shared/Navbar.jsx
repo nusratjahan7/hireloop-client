@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const navLinks = [
-    { label: "Browse Jobs", href: "/browse-jobs" },
+    { label: "Browse Jobs", href: "/jobs" },
     { label: "Company", href: "/company" },
     { label: "Pricing", href: "/pricing" },
 ];
