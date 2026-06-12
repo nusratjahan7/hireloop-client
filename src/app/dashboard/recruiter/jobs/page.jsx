@@ -1,4 +1,5 @@
 import { getCompanyJobs } from '@/lib/api/jobs';
+import { getLoggedInRecruiterCompany } from '@/lib/api/companies';
 import { Chip, Table, Button, Tooltip } from "@heroui/react";
 import { Eye, Pencil, TrashBin } from "@gravity-ui/icons";
 
@@ -10,8 +11,37 @@ const statusColorMap = {
 };
 
 const RecruiterJobs = async () => {
-    const companyId = 'company_123'; // todo
-    const jobs = await getCompanyJobs(companyId);
+    const company = await getLoggedInRecruiterCompany();
+
+    if (!company) {
+        return (
+            <div className="p-6 flex flex-col items-center justify-center py-24 text-center">
+                <h2 className="text-lg font-semibold text-zinc-100 mb-2">No company found</h2>
+                <p className="text-sm text-zinc-500 mb-6">
+                    Please register your company before managing jobs.
+                </p>
+                <a href="/dashboard/recruiter/company" className="text-sm text-blue-400 hover:underline">
+                    Go to Company Profile →
+                </a>
+            </div>
+        );
+    }
+
+    const jobs = await getCompanyJobs(company._id);
+
+    if (!jobs?.length) {
+        return (
+            <div className="p-6 flex flex-col items-center justify-center py-24 text-center">
+                <h2 className="text-lg font-semibold text-zinc-100 mb-2">No jobs posted yet</h2>
+                <p className="text-sm text-zinc-500 mb-6">
+                    Post your first job to start reaching candidates.
+                </p>
+                <a href="/dashboard/recruiter/jobs/new" className="text-sm text-blue-400 hover:underline">
+                    Post a Job →
+                </a>
+            </div>
+        );
+    }
 
     return (
         <div className="p-6">

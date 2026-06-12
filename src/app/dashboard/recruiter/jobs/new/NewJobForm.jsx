@@ -47,13 +47,13 @@ const textareaClass = (hasError) =>
 
 export default function NewJobForm({ company }) {
 
-    console.log("company info", company);
+    // console.log("company info", company);
 
-    const [mockCompany] = useState({
-        name: "Acme Corp (Auto-filled)",
-        id: "company_123",
-        isApproved: true,
-    });
+    // const [company] = useState({
+    //     name: "Acme Corp (Auto-filled)",
+    //     id: "company_123",
+    //     isApproved: true,
+    // });
 
     const [isRemote, setIsRemote] = useState(false);
     const [errors, setErrors] = useState({});
@@ -61,10 +61,10 @@ export default function NewJobForm({ company }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!mockCompany.isApproved) {
-            toast.error("Your company profile must be approved before you can post jobs.");
-            return;
-        }
+        // if (!company.isApproved) {
+        //     toast.error("Your company profile must be approved before you can post jobs.");
+        //     return;
+        // }
 
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
@@ -91,14 +91,16 @@ export default function NewJobForm({ company }) {
         const payload = {
             ...data,
             isRemote,
-            companyId: mockCompany.id,
+            companyId: company._id,
+            companyName: company.name,
+            companyLogo: company.logo,
             status: "active",
             isPubliclyVisible: true,
         };
 
         const res = await createJob(payload);
 
-        if (res.insertedId) {
+        if (res?.insertedId) {
             toast.success("Job posted successfully!");
             e.target.reset();
             setIsRemote(false);
@@ -354,7 +356,7 @@ export default function NewJobForm({ company }) {
                             <div>
                                 <label className="block text-xs font-medium text-zinc-500 mb-1.5">Company</label>
                                 <input
-                                    value={mockCompany.name}
+                                    value={company.name}
                                     readOnly
                                     className="w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm text-zinc-400 cursor-not-allowed opacity-60 focus:outline-none"
                                 />
@@ -362,9 +364,9 @@ export default function NewJobForm({ company }) {
                             <div>
                                 <label className="block text-xs font-medium text-zinc-500 mb-1.5">Status</label>
                                 <input
-                                    value={mockCompany.isApproved ? "Approved" : "Pending"}
+                                    value={company.isApproved ? "Approved" : "Pending"}
                                     readOnly
-                                    className={`w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm cursor-not-allowed opacity-60 focus:outline-none ${mockCompany.isApproved ? "text-emerald-400" : "text-amber-400"
+                                    className={`w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm cursor-not-allowed opacity-60 focus:outline-none ${company.isApproved ? "text-emerald-400" : "text-amber-400"
                                         }`}
                                 />
                             </div>
