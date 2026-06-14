@@ -41,7 +41,7 @@ const NotFound = () => {
                         Back to Home
                     </Link>
                     <Link
-                        href="/browse-jobs"
+                        href="/jobs"
                         className="px-6 py-2.5 border border-white/10 hover:border-white/25 text-gray-300 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200"
                     >
                         Browse Jobs

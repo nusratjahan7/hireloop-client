@@ -82,7 +82,7 @@ export default function NewJobForm({ company }) {
 
         const payload = {
             ...data,
-            isRemote,
+            isRemote: isRemote || data.jobType === "remote",
             companyId: company._id,
             companyName: company.name,
             companyLogo: company.logoUrl,
@@ -166,7 +166,12 @@ export default function NewJobForm({ company }) {
                             {/* Job Type */}
                             <div className="flex flex-col">
                                 <Label className={labelClass}>Job type</Label>
-                                <Select name="jobType">
+                                <Select name="jobType"
+                                    onSelectionChange={(val) => {
+                                        if (val === "remote") setIsRemote(true);
+                                        else setIsRemote(false);
+                                    }}
+                                >
                                     <Button
                                         variant="bordered"
                                         className={

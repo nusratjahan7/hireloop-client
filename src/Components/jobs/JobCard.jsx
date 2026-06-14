@@ -14,7 +14,7 @@ const JobCard = ({ job }) => {
     const symbol = currencySymbols[job.currency] ?? job.currency?.toUpperCase();
 
     return (
-        <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl p-6  flex flex-col gap-4">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6  flex flex-col gap-4">
 
             {/* Company */}
             <div className="flex items-center gap-3">
@@ -50,15 +50,15 @@ const JobCard = ({ job }) => {
             {/* Tags */}
             <div className="flex flex-wrap gap-2">
                 <span className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1 text-xs text-zinc-400">
-                    <MapPin className="w-3.5 h-3.5" />
+                    <MapPin className="w-3.5 h-3.5 text-blue-400" />
                     {job.isRemote ? "Remote" : job.location}
                 </span>
                 <span className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1 text-xs text-zinc-400">
-                    <Briefcase className="w-3.5 h-3.5" />
+                    <Briefcase className="w-3.5 h-3.5 text-blue-400" />
                     {job.isRemote ? "Remote" : "On-site"}
                 </span>
                 <span className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1 text-xs text-zinc-400">
-                    <CircleDollar className="w-3.5 h-3.5" />
+                    <CircleDollar className="w-3.5 h-3.5 text-blue-400" />
                     {symbol}{Number(job.minSalary).toLocaleString()} – {symbol}{Number(job.maxSalary).toLocaleString()}
                 </span>
             </div>
