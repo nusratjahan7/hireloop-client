@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react";
@@ -12,6 +12,9 @@ export default function SignInPage() {
     const [form, setForm] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get("redirect") || "/";
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,7 +38,7 @@ export default function SignInPage() {
             } else {
                 toast.success("Welcome back!");
                 router.refresh();
-                router.push("/");
+                router.push(redirectTo);
             }
         } catch (err) {
             toast.error("An unexpected error occurred. Please try again.");
@@ -173,7 +176,7 @@ export default function SignInPage() {
                     <p className="text-center text-gray-500 text-sm">
                         Don&apos;t have an account?{" "}
                         <Link
-                            href="/auth/signup"
+                            href={`/auth/signup?redirect=${redirectTo}`}
                             className="text-[#7c5cf5] hover:text-[#9d82f8] font-medium transition-colors duration-200"
                         >
                             Create one

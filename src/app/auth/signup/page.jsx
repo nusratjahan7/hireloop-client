@@ -6,14 +6,18 @@ import { authClient } from "@/lib/auth-client";
 import { Label, Radio, RadioGroup } from "@heroui/react";
 import { toast } from "sonner";
 import { Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignUpPage() {
+    const router = useRouter();
     const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [role, setRole] = useState("seeker");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get("redirect") || "/";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +45,7 @@ export default function SignUpPage() {
             } else {
                 toast.success("Account created successfully!");
                 setSuccess(true);
+                router.push(redirectTo);
             }
         } catch (err) {
             toast.error("An unexpected error occurred. Please try again.");
@@ -58,33 +63,6 @@ export default function SignUpPage() {
     };
 
     const strength = passwordStrength();
-
-    if (success) {
-        return (
-            <main className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4">
-                <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full"
-                        style={{ background: "radial-gradient(circle, rgba(124,92,245,0.12) 0%, transparent 70%)" }} />
-                </div>
-                <div className="relative z-10 flex flex-col items-center text-center max-w-sm mx-auto">
-                    <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6">
-                        <CheckCircle2 className="w-8 h-8 text-emerald-400" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Account Created!</h2>
-                    <p className="text-gray-400 text-sm mb-8">
-                        Welcome to Hireloop. Your account has been created successfully.
-                        Check your inbox to verify your email.
-                    </p>
-                    <Link
-                        href="/auth/signin"
-                        className="w-full py-3 rounded-xl bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white text-sm font-semibold text-center transition-colors duration-200"
-                    >
-                        Continue to Sign In
-                    </Link>
-                </div>
-            </main>
-        );
-    }
 
     return (
         <main className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 relative overflow-hidden pt-24 pb-4">
@@ -274,7 +252,7 @@ export default function SignUpPage() {
                     <p className="text-center text-gray-500 text-sm">
                         Already have an account?{" "}
                         <Link
-                            href="/auth/signin"
+                            href={`/auth/signin?redirect=${redirectTo}`}
                             className="text-[#7c5cf5] hover:text-[#9d82f8] font-medium transition-colors duration-200"
                         >
                             Sign In
