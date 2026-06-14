@@ -175,16 +175,6 @@ const JobDetail = async ({ params }) => {
                     </div>
                 </div>
 
-                {/* Apply button — mobile (fixed bottom)
-                <div className="sm:hidden fixed bottom-0 inset-x-0 p-4 bg-zinc-950/90 backdrop-blur border-t border-zinc-800">
-                    <Link
-                        href={`/jobs/${id}/apply`}
-                        style={{ backgroundColor: '#2563eb' }}
-                        className="flex items-center justify-center w-full sm:w-auto text-white text-sm font-medium rounded-xl px-4 h-11"
-                    >
-                        Apply Now
-                    </Link>
-                </div> */}
 
             </div>
         </div>

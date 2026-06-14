@@ -25,8 +25,7 @@ const ApplyPage = async ({ params }) => {
 
     return (
         <div className='pt-24 px-6'>
-            <h2>Apply for {job.jobTitle}</h2>
-            <JobApply job={job} />
+            <JobApply applicant={user} job={job} />
         </div>
     );
 };
