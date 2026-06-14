@@ -27,7 +27,7 @@ const JobDetail = async ({ params }) => {
             <div className="max-w-5xl mx-auto flex flex-col gap-5">
 
                 {/* ── Hero header ── */}
-                <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+                <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-4 overflow-hidden">
                     {/* Subtle gradient accent at top */}
                     <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/60 to-transparent" />
                     <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-blue-950/30 to-transparent pointer-events-none" />
@@ -77,7 +77,7 @@ const JobDetail = async ({ params }) => {
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <MapPin className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Location</p>
                             <p className="text-sm font-medium text-zinc-200">
@@ -85,19 +85,19 @@ const JobDetail = async ({ params }) => {
                             </p>
                         </div>
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <Briefcase className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Job type</p>
                             <p className="text-sm font-medium text-zinc-200 capitalize">{job.jobType}</p>
                         </div>
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <Clock className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Category</p>
                             <p className="text-sm font-medium text-zinc-200 capitalize">{job.jobCategory}</p>
                         </div>
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <CircleDollar className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Salary</p>
                             <p className="text-sm font-medium text-zinc-200">
@@ -105,13 +105,13 @@ const JobDetail = async ({ params }) => {
                             </p>
                         </div>
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <Calendar className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Deadline</p>
                             <p className="text-sm font-medium text-zinc-200">{deadlineFormatted}</p>
                         </div>
 
-                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-3.5">
+                        <div className="flex flex-col gap-1.5 bg-zinc-800/60 border border-zinc-700/50 rounded-xl p-4">
                             <Calendar className="w-4 h-4 text-zinc-500" />
                             <p className="text-xs text-zinc-500">Posted</p>
                             <p className="text-sm font-medium text-zinc-200">{postedFormatted}</p>
