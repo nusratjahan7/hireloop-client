@@ -1,6 +1,7 @@
 import { getJobById } from '@/lib/api/jobs';
 import { MapPin, Briefcase, CircleDollar, Calendar, Clock } from "@gravity-ui/icons";
 import Image from "next/image";
+import Link from 'next/link';
 
 const currencySymbols = {
     usd: "$",
@@ -164,18 +165,26 @@ const JobDetail = async ({ params }) => {
                                 Applications close {deadlineFormatted}
                             </p>
                         </div>
-                        <button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 active:bg-blue-700 transition-colors text-white text-sm font-medium rounded-xl px-8 h-11 shadow-lg shadow-blue-900/30">
+                        <Link
+                            href={`/jobs/${id}/apply`}
+                            style={{ backgroundColor: '#2563eb' }}
+                            className="flex items-center justify-center w-full sm:w-auto text-white text-sm font-medium rounded-xl px-4 h-11"
+                        >
                             Apply Now
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
-                {/* Apply button — mobile (fixed bottom) */}
+                {/* Apply button — mobile (fixed bottom)
                 <div className="sm:hidden fixed bottom-0 inset-x-0 p-4 bg-zinc-950/90 backdrop-blur border-t border-zinc-800">
-                    <button className="w-full bg-blue-600 hover:bg-blue-500 transition-colors text-white text-sm font-semibold rounded-xl h-12">
+                    <Link
+                        href={`/jobs/${id}/apply`}
+                        style={{ backgroundColor: '#2563eb' }}
+                        className="flex items-center justify-center w-full sm:w-auto text-white text-sm font-medium rounded-xl px-4 h-11"
+                    >
                         Apply Now
-                    </button>
-                </div>
+                    </Link>
+                </div> */}
 
             </div>
         </div>

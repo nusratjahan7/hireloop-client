@@ -45,7 +45,7 @@ export default function SignInPage() {
     };
 
     return (
-        <main className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 relative overflow-hidden pt-24">
+        <main className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 pb-4 relative overflow-hidden pt-24">
 
             {/* Background glows */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
