@@ -5,6 +5,7 @@ import { Check, ChevronDown } from "@gravity-ui/icons";
 const seekerPlans = [
     {
         name: "Free",
+        id: "seeker_free",
         price: "$0",
         period: "forever",
         description: "Get started with the basics.",
@@ -19,6 +20,7 @@ const seekerPlans = [
     },
     {
         name: "Pro",
+        id: "seeker_pro",
         price: "$19",
         period: "month",
         description: "For active job seekers.",
@@ -33,6 +35,7 @@ const seekerPlans = [
     },
     {
         name: "Premium",
+        id: "seeker_premium",
         price: "$39",
         period: "month",
         description: "Everything you need to land faster.",
@@ -50,6 +53,7 @@ const seekerPlans = [
 const recruiterPlans = [
     {
         name: "Free",
+        id: "recruiter_free",
         price: "$0",
         period: "forever",
         description: "Perfect for your first year of hiring.",
@@ -63,6 +67,7 @@ const recruiterPlans = [
     },
     {
         name: "Growth",
+        id: "recruiter_growth",
         price: "$49",
         period: "month",
         description: "Scale your hiring with confidence.",
@@ -77,6 +82,7 @@ const recruiterPlans = [
     },
     {
         name: "Enterprise",
+        id: "recruiter_enterprise",
         price: "$149",
         period: "month",
         description: "Built for serious hiring teams.",
@@ -156,8 +162,9 @@ function PlanCard({ plan }) {
 
             <div className="mt-auto pt-2">
                 <form action="/api/checkout_sessions" method="POST">
+                    <input type="hidden" name="plan_id" value={plan.id} />
                     <section>
-                        <button
+                        <button type="submit" role="link"
                             className={`w-full h-11 rounded-xl text-sm font-medium transition-colors ${plan.highlighted
                                 ? "bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white"
                                 : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700"
