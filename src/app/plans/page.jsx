@@ -155,15 +155,20 @@ function PlanCard({ plan }) {
             </ul>
 
             <div className="mt-auto pt-2">
-                <button
-                    className={`w-full h-11 rounded-xl text-sm font-medium transition-colors ${plan.highlighted
-                        ? "bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white"
-                        : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700"
-                        }`}
-                >
-                    {plan.cta}
-                </button>
+                <form action="/api/checkout_sessions" method="POST">
+                    <section>
+                        <button
+                            className={`w-full h-11 rounded-xl text-sm font-medium transition-colors ${plan.highlighted
+                                ? "bg-[#7c5cf5] hover:bg-[#6d4fe8] text-white"
+                                : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700"
+                                }`}
+                        >
+                            {plan.cta}
+                        </button>
+                    </section>
+                </form>
             </div>
+
         </div>
     );
 }
