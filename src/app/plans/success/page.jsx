@@ -2,6 +2,7 @@ import { stripe } from '@/lib/stripe'
 import { redirect } from 'next/navigation'
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { createSubscription } from '@/lib/actions/subscriptions'
 
 export default async function Success({ searchParams }) {
     const { session_id } = await searchParams
@@ -23,14 +24,20 @@ export default async function Success({ searchParams }) {
     }
 
     if (status === 'complete') {
-
+        const subInfo = {
+            email: customerEmail,
+            planId: metadata.planId
+        }
         // update the user table about he new plan
+        const result = await createSubscription(subInfo);
+
+
 
         return (
             <main className="min-h-screen bg-[#050816] flex items-center justify-center px-4 pt-20">
                 {/* Background glow */}
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-emerald-500/10 blur-[120px]" />
+                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-100 h-100 bg-emerald-500/10 blur-[120px]" />
                 </div>
 
                 <div className="relative w-full max-w-md">
