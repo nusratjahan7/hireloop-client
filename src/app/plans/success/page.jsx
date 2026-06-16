@@ -12,7 +12,8 @@ export default async function Success({ searchParams }) {
 
     const {
         status,
-        customer_details: { email: customerEmail }
+        customer_details: { email: customerEmail },
+        metadata
     } = await stripe.checkout.sessions.retrieve(session_id, {
         expand: ['line_items', 'payment_intent']
     })
@@ -22,6 +23,9 @@ export default async function Success({ searchParams }) {
     }
 
     if (status === 'complete') {
+
+        // update the user table about he new plan
+
         return (
             <main className="min-h-screen bg-[#050816] flex items-center justify-center px-4 pt-20">
                 {/* Background glow */}

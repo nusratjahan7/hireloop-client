@@ -32,12 +32,16 @@ export default function SignUpPage() {
         if (form.password.length < 8) return toast.error("Password must be at least 8 characters.");
 
         setLoading(true);
+
+        const plan = role === 'seeker' ? 'seeker_free' : 'recruiter_free';
+
         try {
             const { error: authError } = await authClient.signUp.email({
                 name: form.name,
                 email: form.email,
                 password: form.password,
                 role: role,
+                plan,
             });
 
             if (authError) {
