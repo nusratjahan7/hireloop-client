@@ -18,6 +18,27 @@ const Navbar = () => {
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user;
 
+    const profileHref = user
+        ? user.role === 'recruiter'
+            ? '/dashboard/recruiter'
+            : '/dashboard/seeker'
+        : '/auth/signin';
+
+    const dashboardLinks = {
+        seeker: '/dashboard/seeker',
+        recruiter: '/dashboard/recruiter'
+    }
+
+    if (user?.email) {
+        navLinks.push(
+            {
+                label: "Dashboard",
+                href: dashboardLinks[user?.role || 'seeker']
+            }
+        )
+    }
+
+
     if (isPending) {
         return <nav className="bg-[#222222] mx-4 mt-4 fixed top-0 left-0 right-0 z-50 rounded-2xl">
             <div className="px-4 sm:px-6 lg:px-8">
@@ -105,8 +126,8 @@ const Navbar = () => {
                         {
                             user ? <div className="hidden md:flex items-center gap-4">
                                 <div className="w-px h-5 bg-white/20" />
-                                <Link href="/profile" className={SignInClass}>
-                                    {user.name}
+                                <Link href={profileHref} className={SignInClass}>
+                                    {user.name?.split(" ")[0]}
                                 </Link>
                                 <button
                                     onClick={handleSignOutDes}
@@ -172,11 +193,11 @@ const Navbar = () => {
                     {
                         user ? <div className="flex flex-col gap-4">
                             <Link
-                                href="/profile"
+                                href={profileHref}
                                 className={SignInClass}
                                 onClick={() => setMenuOpen(false)}
                             >
-                                {user.name}
+                                {user.name?.split(" ")[0]}
                             </Link>
                             <button
                                 onClick={handleSignOut}
