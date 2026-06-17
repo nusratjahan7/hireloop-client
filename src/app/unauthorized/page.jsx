@@ -4,9 +4,11 @@ import Link from 'next/link';
 export default async function UnauthorizedPage() {
     const user = await getUserSession();
     const profileHref = user
-        ? user.role === 'recruiter'
-            ? '/dashboard/recruiter'
-            : '/dashboard/seeker'
+        ? user.role === 'admin'
+            ? '/dashboard/admin'
+            : user.role === 'recruiter'
+                ? '/dashboard/recruiter'
+                : '/dashboard/seeker'
         : '/auth/signin';
 
     return (
@@ -47,7 +49,7 @@ export default async function UnauthorizedPage() {
                 {/* Action Buttons */}
                 <div className="mt-4 flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
-                        href="/login"
+                        href="/auth/signin"
                         className="inline-flex items-center justify-center rounded-md bg-[#7c5cf5] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#6d4fe8] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#7c5cf5] transition-colors"
                     >
                         Sign In

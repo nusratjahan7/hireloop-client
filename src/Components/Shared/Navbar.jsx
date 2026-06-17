@@ -19,14 +19,17 @@ const Navbar = () => {
     const user = session?.user;
 
     const profileHref = user
-        ? user.role === 'recruiter'
-            ? '/dashboard/recruiter'
-            : '/dashboard/seeker'
+        ? user.role === 'admin'
+            ? '/dashboard/admin'
+            : user.role === 'recruiter'
+                ? '/dashboard/recruiter'
+                : '/dashboard/seeker'
         : '/auth/signin';
 
     const dashboardLinks = {
         seeker: '/dashboard/seeker',
-        recruiter: '/dashboard/recruiter'
+        recruiter: '/dashboard/recruiter',
+        admin: '/dashboard/admin'
     }
 
     if (user?.email) {
