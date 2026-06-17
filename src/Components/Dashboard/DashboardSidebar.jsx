@@ -20,11 +20,11 @@ export async function DashboardSidebar() {
 
     const seekerNavLinks = [
         { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/jobseeker" },
-        { icon: Magnifier, label: "Jobs", href: "/dashboard/jobseeker/jobs" },
-        { icon: Bookmark, label: "Saved Jobs", href: "/dashboard/jobseeker/saved-jobs" },
-        { icon: FileText, label: "Applications", href: "/dashboard/jobseeker/applications" },
-        { icon: CreditCard, label: "Billing", href: "/dashboard/jobseeker/billing" },
-        { icon: Gear, label: "Settings", href: "/dashboard/jobseeker/settings" },
+        { icon: Magnifier, label: "Jobs", href: "/dashboard/seeker/jobs" },
+        { icon: Bookmark, label: "Saved Jobs", href: "/dashboard/seeker/saved-jobs" },
+        { icon: FileText, label: "Applications", href: "/dashboard/seeker/applications" },
+        { icon: CreditCard, label: "Billing", href: "/dashboard/seeker/billing" },
+        { icon: Gear, label: "Settings", href: "/dashboard/seeker/settings" },
     ];
 
 
