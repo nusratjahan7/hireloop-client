@@ -3,20 +3,28 @@
 import React from 'react';
 import { Table, Button } from '@heroui/react';
 import { CircleArrowDownFill } from '@gravity-ui/icons';
-// import { updateCompany } from '@/lib/actions/companies';
+import { updateCompany } from '@/lib/actions/companies';
+import { toast } from 'sonner';
 
 const CompanyTable = ({ companies = [] }) => {
 
-    // const handleApprove = async (id) => {
-    //     const result = await updateCompany(id, { status: 'Approved' })
-    //     if (result.modifiedCount) {
-    //         console.log(`Approved company with ID: ${id}`, result);
-    //     }
-    // };
+    const handleApprove = async (id) => {
+        const result = await updateCompany(id, { status: 'Approved' })
+        if (result.modifiedCount) {
+            toast.success("Company approved successfully!");
+        } else {
+            toast.error("Could not approve company. Please try again.");
+        }
+    };
 
-    // const handleReject = async (id) => {
-    //     const result = await updateCompany(id, { status: 'Rejected' })
-    // };
+    const handleReject = async (id) => {
+        const result = await updateCompany(id, { status: 'Rejected' })
+        if (result.modifiedCount) {
+            toast.error("Company rejected.");
+        } else {
+            toast.error("Could not reject company. Please try again.");
+        }
+    };
 
     // Helper to extract a timestamp/date value safely from your data variations
     const getCompanyDate = (company) => {
