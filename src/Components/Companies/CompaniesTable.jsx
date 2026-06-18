@@ -95,6 +95,10 @@ const CompanyTable = ({ companies = [] }) => {
                             </Table.Column>
 
                             <Table.Column className="text-[#a3a3a3] font-medium pb-4 border-b border-[#262626]">
+                                Job Count
+                            </Table.Column>
+
+                            <Table.Column className="text-[#a3a3a3] font-medium pb-4 border-b border-[#262626]">
                                 Status
                             </Table.Column>
 
@@ -132,6 +136,13 @@ const CompanyTable = ({ companies = [] }) => {
                                         <Table.Cell className="py-4 align-middle">
                                             <span className="px-3 py-1 bg-[#262626]/60 text-[#a3a3a3] border border-[#404040]/20 rounded-full text-xs capitalize">
                                                 {company.industry}
+                                            </span>
+                                        </Table.Cell>
+
+                                        {/* job count */}
+                                        <Table.Cell className="py-4 align-middle">
+                                            <span className="px-3 py-1 bg-[#262626]/60 text-[#a3a3a3] text-xs capitalize">
+                                                {company.jobCount}
                                             </span>
                                         </Table.Cell>
 
