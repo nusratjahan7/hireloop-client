@@ -2,7 +2,7 @@ import React from 'react';
 
 const AdminDashboardHomePage = () => {
     return (
-        <div>
+        <div className='pt-4'>
             <h1>admin stats</h1>
         </div>
     );

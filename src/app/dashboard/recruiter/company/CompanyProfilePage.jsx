@@ -137,7 +137,7 @@ function CompanyForm({ initial = {}, onCancel, onSave, recruiterId }) {
             const result = await createCompany(payload);
             if (result) {
                 toast.success("Company registered successfully!");
-                onSave(payload);
+                onSave({ ...payload, _id: result.insertedId });
             }
         } catch (err) {
             toast.error("Something went wrong. Please try again.");

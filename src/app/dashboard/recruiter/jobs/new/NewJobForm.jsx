@@ -53,10 +53,10 @@ export default function NewJobForm({ company }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // if (!company.isApproved) {
-        //     toast.error("Your company profile must be approved before you can post jobs.");
-        //     return;
-        // }
+        if (company.status !== "approved") {
+            toast.error("Your company profile must be approved before you can post jobs.");
+            return;
+        }
 
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
@@ -96,7 +96,7 @@ export default function NewJobForm({ company }) {
             toast.success("Job posted successfully!");
             e.target.reset();
             setIsRemote(false);
-            // window.location.href = "/dashboard/recruiter/jobs";
+            window.location.href = "/dashboard/recruiter/jobs";
         }
     };
 
@@ -361,9 +361,9 @@ export default function NewJobForm({ company }) {
                             <div>
                                 <label className="block text-xs font-medium text-zinc-500 mb-1.5">Status</label>
                                 <input
-                                    value={company.isApproved ? "Approved" : "Pending"}
+                                    value={company.status === "approved" ? "Approved" : "Pending"}
                                     readOnly
-                                    className={`w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm cursor-not-allowed opacity-60 focus:outline-none ${company.isApproved ? "text-emerald-400" : "text-amber-400"
+                                    className={`w-full border border-zinc-800 bg-zinc-800/40 rounded-lg h-10 px-3 text-sm cursor-not-allowed opacity-60 focus:outline-none ${company.status === "approved" ? "text-emerald-400" : "text-amber-400"
                                         }`}
                                 />
                             </div>
