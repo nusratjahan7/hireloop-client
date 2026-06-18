@@ -131,13 +131,15 @@ function CompanyForm({ initial = {}, onCancel, onSave, recruiterId }) {
         const errs = validate(fields);
         if (Object.keys(errs).length) { setErrors(errs); return; }
 
-        const payload = { ...fields, logoUrl, recruiterId };
+        const companyStatus = initial.status || "pending";
+
+        const payload = { ...fields, logoUrl, recruiterId, status: companyStatus };
 
         try {
             const result = await createCompany(payload);
             if (result) {
-                toast.success("Company registered successfully!");
-                onSave({ ...payload, _id: result.insertedId });
+                toast.success(initial.name ? "Company updated successfully!" : "Company registered successfully!");
+                onSave({ ...payload, _id: result.insertedId || initial._id });
             }
         } catch (err) {
             toast.error("Something went wrong. Please try again.");
@@ -372,8 +374,10 @@ const CompanyProfilePage = ({ recruiter, recruiterCompany }) => {
     const [mode, setMode] = useState("view"); // "view" | "register" | "edit"
 
     const handleSave = (data) => {
-        // TODO: replace with real API call
-        setCompany({ ...data, status: company?.status ?? "pending" });
+        setCompany({
+            ...data,
+            status: company?.status || data.status || "pending"
+        });
         setMode("view");
     };
 
