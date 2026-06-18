@@ -6,7 +6,7 @@ import { CircleArrowDownFill } from '@gravity-ui/icons';
 import { updateCompany } from '@/lib/actions/companies';
 import { toast } from 'sonner';
 
-const CompanyTable = ({ companies = [] }) => {
+const CompanyTable = ({ companies }) => {
 
     const handleApprove = async (id) => {
         const result = await updateCompany(id, { status: 'Approved' })
