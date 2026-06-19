@@ -2,8 +2,18 @@
 import JobsClient from "@/components/jobs/JobsClient";
 import { getJobs } from "@/lib/api/jobs";
 
-const BrowseJobs = async () => {
-    const jobs = await getJobs();
+const BrowseJobs = async ({ searchParams }) => {
+
+    const filters = await searchParams;
+    const filterObj = {
+        ...filters,
+        isRemote: filters.isRemote === 'true' ? true : false
+    }
+
+    const querySearch = new URLSearchParams(filterObj);
+    const queryString = querySearch.toString();
+
+    const jobs = await getJobs(queryString);
 
     return (
         <div className="pt-24 px-6">
@@ -12,7 +22,7 @@ const BrowseJobs = async () => {
                 <p className="text-zinc-400 mt-2">Discover your next challenge.</p>
             </div>
             <div className="max-w-7xl mx-auto">
-                <JobsClient jobs={jobs} />
+                <JobsClient filters={filterObj} jobs={jobs || []} />
             </div>
         </div>
     );

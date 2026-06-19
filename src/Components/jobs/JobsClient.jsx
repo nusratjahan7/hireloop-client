@@ -6,11 +6,11 @@ import JobSearchFilter from "@/components/jobs/JobSearchFilter";
 import { Briefcase } from "@gravity-ui/icons";
 import { useRouter } from "next/navigation";
 
-export default function JobsClient({ jobs }) {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedType, setSelectedType] = useState("all");
-    const [selectedCategory, setSelectedCategory] = useState("all");
-    const [isRemoteOnly, setIsRemoteOnly] = useState(false);
+export default function JobsClient({ jobs, filters }) {
+    const [searchQuery, setSearchQuery] = useState(filters.search);
+    const [selectedType, setSelectedType] = useState(filters.jobType || "all");
+    const [selectedCategory, setSelectedCategory] = useState(filters.jobCategory || "all");
+    const [isRemoteOnly, setIsRemoteOnly] = useState(filters.isRemote || false);
 
     const router = useRouter();
 
