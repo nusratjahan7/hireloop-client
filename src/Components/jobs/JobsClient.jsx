@@ -7,7 +7,7 @@ import { Briefcase } from "@gravity-ui/icons";
 import { useRouter } from "next/navigation";
 import { Pagination } from "@heroui/react";
 
-export default function JobsClient({ jobs, filters }) {
+export default function JobsClient({ jobs, filters, total }) {
     const [searchQuery, setSearchQuery] = useState(filters.search);
     const [selectedType, setSelectedType] = useState(filters.jobType || "all");
     const [selectedCategory, setSelectedCategory] = useState(filters.jobCategory || "all");
@@ -16,18 +16,31 @@ export default function JobsClient({ jobs, filters }) {
 
     const router = useRouter();
 
-    const totalItems = jobs.length;
+    const totalItems = total;
     const itemsPerPage = 12;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     const getPageNumbers = () => {
-        const pages = [1, 2, 3, 4];
+        const pages = [];
+        pages.push(1);
+        if (page > 3) {
+            pages.push("ellipsis");
+        }
+        const start = Math.max(2, page - 1);
+        const end = Math.min(totalPages - 1, page + 1);
+        for (let i = start; i <= end; i++) {
+            pages.push(i);
+        }
+        if (page < totalPages - 2) {
+            pages.push("ellipsis");
+        }
+        pages.push(totalPages);
 
         return pages;
     }
 
-    const startItem = 1;
-    const endItem = totalItems;
+    const startItem = (page - 1) * itemsPerPage + 1;
+    const endItem = Math.min(page * itemsPerPage, totalItems);
 
     useEffect(() => {
         const sp = new URLSearchParams()

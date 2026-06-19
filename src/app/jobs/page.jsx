@@ -13,7 +13,7 @@ const BrowseJobs = async ({ searchParams }) => {
     const querySearch = new URLSearchParams(filters);
     const queryString = querySearch.toString();
 
-    const jobs = await getJobs(queryString);
+    const { jobs, total } = await getJobs(queryString);
 
     return (
         <div className="pt-24 px-6">
@@ -22,7 +22,7 @@ const BrowseJobs = async ({ searchParams }) => {
                 <p className="text-zinc-400 mt-2">Discover your next challenge.</p>
             </div>
             <div className="max-w-7xl mx-auto">
-                <JobsClient filters={filterObj} jobs={jobs || []} />
+                <JobsClient filters={filterObj} jobs={jobs || []} total={total} />
             </div>
         </div>
     );
