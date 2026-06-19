@@ -12,13 +12,22 @@ export default function JobsClient({ jobs, filters }) {
     const [selectedType, setSelectedType] = useState(filters.jobType || "all");
     const [selectedCategory, setSelectedCategory] = useState(filters.jobCategory || "all");
     const [isRemoteOnly, setIsRemoteOnly] = useState(filters.isRemote || false);
+    const [page, setPage] = useState(filters.page || 1);
 
     const router = useRouter();
 
-    const [page, setPage] = useState(1);
     const totalItems = jobs.length;
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const getPageNumbers = () => {
+        const pages = [1, 2, 3, 4];
+
+        return pages;
+    }
+
+    const startItem = 1;
+    const endItem = totalItems;
 
     useEffect(() => {
         const sp = new URLSearchParams()
@@ -39,9 +48,13 @@ export default function JobsClient({ jobs, filters }) {
             sp.set('isRemote', true)
         }
 
+        if (page) {
+            sp.set('page', page)
+        }
+
         const path = `?${sp.toString()}`
         router.push(path);
-    }, [router, searchQuery, selectedType, selectedCategory, isRemoteOnly])
+    }, [router, searchQuery, selectedType, selectedCategory, isRemoteOnly, page])
 
 
     return (
@@ -68,7 +81,7 @@ export default function JobsClient({ jobs, filters }) {
 
                     {/* pagination */}
 
-                    <Pagination className="w-full">
+                    <Pagination className="w-full mt-4">
                         <Pagination.Summary>
                             Showing {startItem}-{endItem} of {totalItems} results
                         </Pagination.Summary>
