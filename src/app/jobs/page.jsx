@@ -1,5 +1,5 @@
 // app/jobs/page.jsx
-import JobsClient from "@/components/jobs/JobsClient";
+import JobsClient from "@/Components/jobs/JobsClient";
 import { getJobs } from "@/lib/api/jobs";
 
 const BrowseJobs = async ({ searchParams }) => {

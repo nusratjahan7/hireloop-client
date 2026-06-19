@@ -1,8 +1,8 @@
 // components/jobs/JobsClient.jsx
 "use client";
 import { useState, useEffect } from "react";
-import JobCard from "@/components/jobs/JobCard";
-import JobSearchFilter from "@/components/jobs/JobSearchFilter";
+import JobCard from "@/Components/jobs/JobCard";
+import JobSearchFilter from "@/Components/jobs/JobSearchFilter";
 import { Briefcase } from "@gravity-ui/icons";
 import { useRouter } from "next/navigation";
 import { Pagination } from "@heroui/react";
