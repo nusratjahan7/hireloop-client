@@ -5,6 +5,7 @@ import JobCard from "@/components/jobs/JobCard";
 import JobSearchFilter from "@/components/jobs/JobSearchFilter";
 import { Briefcase } from "@gravity-ui/icons";
 import { useRouter } from "next/navigation";
+import { Pagination } from "@heroui/react";
 
 export default function JobsClient({ jobs, filters }) {
     const [searchQuery, setSearchQuery] = useState(filters.search);
@@ -13,6 +14,11 @@ export default function JobsClient({ jobs, filters }) {
     const [isRemoteOnly, setIsRemoteOnly] = useState(filters.isRemote || false);
 
     const router = useRouter();
+
+    const [page, setPage] = useState(1);
+    const totalItems = jobs.length;
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     useEffect(() => {
         const sp = new URLSearchParams()
@@ -50,14 +56,52 @@ export default function JobsClient({ jobs, filters }) {
                 setIsRemoteOnly={setIsRemoteOnly} />
 
             {jobs.length > 0 ? (
-                <div className="flex flex-col gap-4 mt-6">
-                    <p className="text-white/40 text-sm">{jobs.length} jobs found</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {jobs.map((job) => (
-                            <JobCard key={job._id} job={job} />
-                        ))}
+                <>
+                    <div className="flex flex-col gap-4 mt-6">
+                        <p className="text-white/40 text-sm">{jobs.length} jobs found</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {jobs.map((job) => (
+                                <JobCard key={job._id} job={job} />
+                            ))}
+                        </div>
                     </div>
-                </div>
+
+                    {/* pagination */}
+
+                    <Pagination className="w-full">
+                        <Pagination.Summary>
+                            Showing {startItem}-{endItem} of {totalItems} results
+                        </Pagination.Summary>
+                        <Pagination.Content>
+                            <Pagination.Item>
+                                <Pagination.Previous isDisabled={page === 1} onPress={() => setPage((p) => p - 1)}>
+                                    <Pagination.PreviousIcon />
+                                    <span>Previous</span>
+                                </Pagination.Previous>
+                            </Pagination.Item>
+                            {getPageNumbers().map((p, i) =>
+                                p === "ellipsis" ? (
+                                    <Pagination.Item key={`ellipsis-${i}`}>
+                                        <Pagination.Ellipsis />
+                                    </Pagination.Item>
+                                ) : (
+                                    <Pagination.Item key={p}>
+                                        <Pagination.Link isActive={p === page} onPress={() => setPage(p)}>
+                                            {p}
+                                        </Pagination.Link>
+                                    </Pagination.Item>
+                                ),
+                            )}
+                            <Pagination.Item>
+                                <Pagination.Next isDisabled={page === totalPages} onPress={() => setPage((p) => p + 1)}>
+                                    <span>Next</span>
+                                    <Pagination.NextIcon />
+                                </Pagination.Next>
+                            </Pagination.Item>
+                        </Pagination.Content>
+                    </Pagination>
+                </>
+
             ) : (
                 <div className="flex flex-col items-center justify-center py-32 gap-4 text-center mt-6">
                     <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center">
