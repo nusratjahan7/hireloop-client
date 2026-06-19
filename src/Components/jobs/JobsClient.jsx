@@ -1,43 +1,59 @@
 // components/jobs/JobsClient.jsx
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import JobCard from "@/components/jobs/JobCard";
 import JobSearchFilter from "@/components/jobs/JobSearchFilter";
 import { Briefcase } from "@gravity-ui/icons";
+import { useRouter } from "next/navigation";
 
 export default function JobsClient({ jobs }) {
-    const [filters, setFilters] = useState({});
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedType, setSelectedType] = useState("all");
+    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [isRemoteOnly, setIsRemoteOnly] = useState(false);
 
-    const filtered = useMemo(() => {
-        if (!jobs) return [];
-        return jobs.filter((job) => {
-            const { search, category, jobType } = filters;
+    const router = useRouter();
 
-            if (search) {
-                const q = search.toLowerCase();
-                const matches =
-                    job.jobTitle?.toLowerCase().includes(q) ||
-                    job.companyName?.toLowerCase().includes(q) ||
-                    job.jobCategory?.toLowerCase().includes(q);
-                if (!matches) return false;
-            }
+    useEffect(() => {
+        const sp = new URLSearchParams()
 
-            if (category && job.jobCategory?.toLowerCase() !== category) return false;
-            if (jobType && job.jobType?.toLowerCase() !== jobType) return false;
+        if (searchQuery) {
+            sp.set('search', searchQuery);
+        }
 
-            return true;
-        });
-    }, [jobs, filters]);
+        if (selectedType !== 'all') {
+            sp.set('jobType', selectedType);
+        }
+
+        if (selectedCategory !== 'all') {
+            sp.set('jobCategory', selectedCategory);
+        }
+
+        if (isRemoteOnly) {
+            sp.set('isRemote', true)
+        }
+
+        const path = `?${sp.toString()}`
+        router.push(path);
+    }, [router, searchQuery, selectedType, selectedCategory, isRemoteOnly])
+
 
     return (
         <div className="flex flex-col">
-            <JobSearchFilter onFilterChange={setFilters} />
+            <JobSearchFilter searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                isRemoteOnly={isRemoteOnly}
+                setIsRemoteOnly={setIsRemoteOnly} />
 
-            {filtered.length > 0 ? (
+            {jobs.length > 0 ? (
                 <div className="flex flex-col gap-4 mt-6">
-                    <p className="text-white/40 text-sm">{filtered.length} jobs found</p>
+                    <p className="text-white/40 text-sm">{jobs.length} jobs found</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filtered.map((job) => (
+                        {jobs.map((job) => (
                             <JobCard key={job._id} job={job} />
                         ))}
                     </div>
