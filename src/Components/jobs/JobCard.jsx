@@ -1,6 +1,8 @@
+"use client"
 import Link from "next/link";
 import { MapPin, Briefcase, CircleDollar, Calendar, ArrowRight } from "@gravity-ui/icons";
 import Image from "next/image";
+import { motion } from "motion/react";
 
 const currencySymbols = {
     usd: "$",
@@ -14,14 +16,20 @@ const JobCard = ({ job }) => {
     const symbol = currencySymbols[job.currency] ?? job.currency?.toUpperCase();
 
     return (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6  flex flex-col gap-4">
+        <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex flex-col gap-4"
+        >
 
             {/* Company */}
             <div className="flex items-center gap-3">
                 {job.companyLogo ? (
                     <Image
                         src={job.companyLogo}
-                        alt={job.companyName}
+                        alt={job.companyName || "Company logo"}
                         width={44}
                         height={44}
                         className="rounded-xl object-cover border border-zinc-700"
@@ -76,13 +84,13 @@ const JobCard = ({ job }) => {
                 </span>
                 <Link
                     href={`/jobs/${job._id}`}
-                    className="flex items-center gap-1.5 text-sm font-medium text-white hover:text-zinc-300 transition-colors"
+                    className="flex items-center gap-1.5 text-sm font-medium text-white hover:text-zinc-300 transition-colors group"
                 >
-                    Apply Now <ArrowRight className="w-4 h-4" />
+                    Apply Now <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
             </div>
 
-        </div>
+        </motion.div>
     );
 };
 
